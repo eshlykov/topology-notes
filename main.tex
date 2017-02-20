@@ -1,0 +1,194 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper,left=20mm,right=10mm,top=20mm,bottom=20mm]{geometry}
+
+\usepackage[russian]{babel}		% Русский язык
+\usepackage[utf8]{inputenc}		% Кодировка UTF-8
+
+\usepackage[nottoc]{tocbibind}		% Список литературы в содержании
+\usepackage[parfill]{parskip}		% Пустые строки между абзацами
+
+\usepackage{amsmath}			% Формулы: \DeclareMathOperator, ...
+\usepackage{amssymb}			% Формулы: \mathfrac, ...
+\usepackage{amsthm}			% Tеоеремы: \newtheorem, ...
+\usepackage{authblk}			% Заголовок: \affil, ...
+\usepackage{breqn}			% Формулы с переносом: \dmath, ...
+\usepackage{chngcntr}			% Номера подсекций: \counterwithout, ...
+\usepackage{datetime}			% Дата: \today, ...
+\usepackage{enumitem}			% Настройка списков: \setlist, ...
+\usepackage{hyperref}			% Ссылки: \href, ...
+\usepackage{soulutf8}			% Разреженный текст: \so, ..
+\usepackage{subfiles}			% Подфайлы: \subfile, ...
+\usepackage{thm-restate}		% Повторная формулировка теорем: \restatable, ...
+\usepackage{xcolor}			% Цвета: \definecolor, ...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Внешний вид документа
+	%%% Номера страниц
+	\pagestyle{plain}
+	%%% Подпись ссылка литературы
+		\addto{\captionsrussian}{\renewcommand{\refname}{Литература по курсу}}
+	%%% Настройка ссылок
+		\definecolor{linkcolor}{HTML}{000040}
+		\definecolor{urlcolor}{HTML}{4040FF}
+		\hypersetup{
+			linktoc=all,
+			colorlinks=true,
+			linkcolor=linkcolor,
+			urlcolor=urlcolor
+		}
+	%%% Вывод текста
+		\setlength{\parindent}{0pt}
+		\setlength{\parskip}{\baselineskip}
+		\begingroup
+		 	\makeatletter
+			\@for\theoremstyle:=definition,remark,plain\do{
+				\expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{
+					\addtolength\thm@preskip\parskip
+					}
+				}
+		\endgroup
+	%%% Настройка списков
+		\renewcommand\labelenumi{(\theenumi)}
+		\renewcommand{\labelitemi}{---}
+		\setlist[itemize]{leftmargin=2\baselineskip}
+		\setlist[enumerate]{leftmargin=2\baselineskip}
+	%%% Перенос формул
+		\relpenalty=10000
+		\binoppenalty=10000
+	%%% Нумерация секций и подсекций
+		\counterwithout{subsection}{section}
+		\renewcommand{\thesection}{Лекция \arabic{section}}
+
+%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Содержание конспекта
+	%%% Различные виды окружений для теорем и всего такого
+			\newtheorem{theorem}{Теорема}
+			\newtheorem{lemma}{Лемма}
+			\newtheorem{statement}{Утверждение}
+			\newtheorem{proposition}{Предложение}
+			\newtheorem{problem}{Задача}
+			\newtheorem*{theorem*}{Теорема}
+			\newtheorem*{proposition*}{Предложение}
+			\newtheorem*{statement*}{Утверждение}
+			\newtheorem*{lemma*}{Лемма}
+			\newtheorem*{corollary}{Следствие}
+		\theoremstyle{definition}
+			\newtheorem{definition}{Определение}
+		\theoremstyle{remark}
+			\newtheorem*{remark}{Замечание}
+		\theoremstyle{remark}
+			\newtheorem*{example}{Пример}
+		\theoremstyle{remark}
+			\newtheorem*{solution}{Решение}
+		\theoremstyle{remark}
+			\newtheorem{exercise}{Упражнение}
+	%%% Сброс счетчик после каждой новой лекции
+		\newcommand{\resetcounters}{
+			\setcounter{theorem}{0}
+			\setcounter{definition}{0}
+			\setcounter{lemma}{0}
+			\setcounter{statement}{0}
+			\setcounter{problem}{0}
+			\setcounter{proposition}{0}
+		}
+	%%% Новый вид списка для поэтапных доказательств и доказательств нескольких утверждений
+		\newlist{phased}{description}{2}
+		\newlist{multiproof}{description}{2}
+		\setlist[phased]{
+			leftmargin=\baselineskip,
+			labelindent=\baselineskip,
+			font=\normalfont\so
+		}
+		\setlist[multiproof]{
+			leftmargin=\baselineskip,
+			labelindent=\baselineskip,
+			style=nextline
+		}
+	%%% Набор текста
+		\DeclareMathOperator{\Id}{id}			% Тождественное отображение
+		\DeclareMathOperator{\Ind}{i}			% Индекс отображения
+		\DeclareMathOperator{\pt}{pt}			% Топологическое пространство из одной точки
+		\newcommand{\Abs}[1]{\left\vert#1\right\vert}	% Модуль чего бы то ни было
+		\newcommand{\B}{B}				% Шар
+		\newcommand{\D}{D}				% Диск
+		\newcommand{\Emp}{\varnothing}			% Пустое множество
+		\newcommand{\Eps}{\varepsilon}			% Привычный эпсилон
+		\newcommand{\ft}[2]{(#1)\Then(#2)}		% От #1 к #2
+		\newcommand{\F}{\mathbb{F}} 			% Поле
+		\newcommand{\Gr}{\geqslant}			% Больше либо равно, сокращение от greater
+		\newcommand{\iaoi}{\Leftrightarrow}		% Тогда и только тогда, когда
+		\newcommand{\If}{\Leftarrow}			% Если, при условии и т. п.
+		\newcommand{\Inf}{\infty}			% Бесконечность
+		\newcommand{\Le}{\leqslant}			% Меньше либо равно, сокращение от less
+		\newcommand{\Nice}[1]{\mathcal{#1}}		% "Красивый" шрифт
+		\newcommand{\Norm}[1]{\lVert #1 \rVert}		% Норма чего бы то ни быо
+		\newcommand{\N}{\mathbb{N}} 			% Натуральные числа
+		\newcommand{\Q}{\mathbb{Q}} 			% Рациональные числа
+		\newcommand{\R}{\mathbb{R}} 			% Действительные числа
+		\newcommand{\Set}[1]{\left\{\,#1\,\right\}}	% Множество в set builder notation или перечислении
+		\newcommand{\ssq}{\subseteq}			% Подмножество
+		\newcommand{\Then}{\Rightarrow}			% Следовательно, тогда, то и т. п.
+		\newcommand{\T}{\mathbb{T}} 			% Тор
+		\newcommand{\Up}[1]{\widetilde{#1}}		% Поднятие чего бы то ни было
+		\newcommand{\wo}{\setminus}			% Разность множеств, сокращение от without
+		\newcommand{\W}{\Omega}				% топология
+		\newcommand{\Z}{\mathbb{Z}} 			% Целые числа
+		\renewcommand{\C}{\mathbb{C}}			% Комплексные числа
+		\renewcommand{\phi}{\varphi}			% Привычныая фив
+		\renewcommand{\S}{\mathbb{S}}			% Сфера
+%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Заголовок документа
+	\title{Начала топологии}
+	\author{Евгений Шлыков}
+	\affil{Московский физико-технический институт (государственный университет)}
+	\date{\today}
+%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	Настоящая работа является конспектом лекций Глеба Геннадьевича Гусева, читавшего курс <<Начала топологии>>
+	для 599 группы в осеннем семестре 2016 года. Содержание дополнено несколькими поясняющими замечаниями
+	и упражнениями.
+
+	По всем вопросам, замечаниям, предложениям можно:
+	\begin{itemize}
+		\item написать на почту
+			\href{mailto:e.a.shlykov@yandex.ru?subject=[diht-topology-notes]}{e.a.shlykov@yandex.ru};
+		\item обратиться через \href{https://t.me/Evgeny_SHL}{Telegram};
+		\item оставить комментарий, создать issue или оформить pull request на
+			\href{https://github.com/Evgeny-SHL/diht-topology-notes}{GitHub}.
+	\end{itemize}
+\end{abstract}
+
+\newpage \tableofcontents \newpage
+
+\begin{thebibliography}{9}
+	\bibitem{TwT} \textit{Sidney A. Morris}, <<\href{http://www.topologywithouttears.net}{Topology Without Tears}>>
+		(по ссылке есть также перевод на русский язык).
+	\bibitem{ItT} \textit{Васильев В. А.}, <<Введение в топологию>>
+		(есть в \href{http://lib.mipt.ru}{электронной библиотеке Физтеха}).
+\end{thebibliography}
+
+\subfile{lecture-1}
+\subfile{lecture-2}
+\subfile{lecture-3}
+\subfile{lecture-4}
+\subfile{lecture-5}
+\subfile{lecture-6}
+\subfile{lecture-7}
+\subfile{lecture-8}
+
+\end{document}
