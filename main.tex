@@ -21,14 +21,19 @@
 \usepackage{hyperref}			% Ссылки: \href, ...
 \usepackage{soulutf8}			% Разреженный текст: \so, ..
 \usepackage{subfiles}			% Подфайлы: \subfile, ...
+\usepackage{titlesec}			% Формат заголовков секций: \titleformat, ...
 \usepackage{thm-restate}		% Повторная формулировка теорем: \restatable, ...
+\usepackage{tocloft}			% Точки в содержании: \cftsecleader, ...
 \usepackage{xcolor}			% Цвета: \definecolor, ...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%% Внешний вид документа
 	%%% Номера страниц
-	\pagestyle{plain}
+		\pagestyle{plain}
+	%%% Формат содержания
+		\renewcommand{\cftsecpresnum}{Лекция~}
+		\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 	%%% Подпись ссылка литературы
 		\addto{\captionsrussian}{\renewcommand{\refname}{Литература по курсу}}
 	%%% Настройка ссылок
@@ -40,6 +45,24 @@
 			linkcolor=linkcolor,
 			urlcolor=urlcolor
 		}
+		\makeatletter
+		\def\contentsline#1#2#3#4{
+			\begingroup
+				\Hy@safe@activestrue
+			\edef\x{\endgroup
+				\def\noexpand\Hy@tocdestname{#4}
+			}\x
+			\csname l@#1\endcsname{#2}{#3}
+		}
+		\patchcmd{\l@subsection}{{\cftsubsecfont #1}}{
+			\hyper@linkstart{link}{\Hy@tocdestname}{}{\cftsubsecfont #1}
+		}{}{}
+		\patchcmd{\cftsubsecfillnum}{\par}{\hyper@linkend\par}{}{}
+		\patchcmd{\l@section}{{\cftsecfont #1}}{
+			\hyper@linkstart{link}{\Hy@tocdestname}{}{\cftsecfont #1}
+		}{}{}
+		\patchcmd{\cftsecfillnum}{\par}{\hyper@linkend\par}{}{}
+		\makeatother
 	%%% Вывод текста
 		\setlength{\parindent}{0pt}
 		\setlength{\parskip}{\baselineskip}
@@ -60,8 +83,8 @@
 		\relpenalty=10000
 		\binoppenalty=10000
 	%%% Нумерация секций и подсекций
-		\counterwithout{subsection}{section}
-		\renewcommand{\thesection}{Лекция \arabic{section}}
+		\titleformat{\section}{\normalfont\Large\bfseries}{Лекция~\thesection}{1em}{}
+		\setcounter{secnumdepth}{1}
 	%%% Изображения
 		\graphicspath{{images/}}
 %%%
@@ -70,18 +93,18 @@
 
 %%% Содержание конспекта
 	%%% Различные виды окружений для теорем и всего такого
-			\newtheorem{theorem}{Теорема}
-			\newtheorem{lemma}{Лемма}
-			\newtheorem{statement}{Утверждение}
-			\newtheorem{proposition}{Предложение}
-			\newtheorem{problem}{Задача}
+			\newtheorem{theorem}{Теорема}[section]
+			\newtheorem{lemma}{Лемма}[section]
+			\newtheorem{statement}{Утверждение}[section]
+			\newtheorem{proposition}{Предложение}[section]
+			\newtheorem{problem}{Задача}[section]
 			\newtheorem*{theorem*}{Теорема}
 			\newtheorem*{proposition*}{Предложение}
 			\newtheorem*{statement*}{Утверждение}
 			\newtheorem*{lemma*}{Лемма}
 			\newtheorem*{corollary}{Следствие}
 		\theoremstyle{definition}
-			\newtheorem{definition}{Определение}
+			\newtheorem{definition}{Определение}[section]
 		\theoremstyle{remark}
 			\newtheorem*{remark}{Замечание}
 		\theoremstyle{remark}
@@ -90,15 +113,6 @@
 			\newtheorem*{solution}{Решение}
 		\theoremstyle{remark}
 			\newtheorem{exercise}{Упражнение}
-	%%% Сброс счетчик после каждой новой лекции
-		\newcommand{\resetcounters}{
-			\setcounter{theorem}{0}
-			\setcounter{definition}{0}
-			\setcounter{lemma}{0}
-			\setcounter{statement}{0}
-			\setcounter{problem}{0}
-			\setcounter{proposition}{0}
-		}
 	%%% Новый вид списка для поэтапных доказательств и доказательств нескольких утверждений
 		\newlist{phased}{description}{2}
 		\newlist{multiproof}{description}{2}
@@ -177,7 +191,8 @@
 	\end{itemize}
 \end{abstract}
 
-\newpage \tableofcontents \newpage
+\tableofcontents
+\newpage
 
 \begin{thebibliography}{9}
 	\bibitem{TwT} \textit{Sidney A. Morris}, <<\href{http://www.topologywithouttears.net}{Topology Without Tears}>>
