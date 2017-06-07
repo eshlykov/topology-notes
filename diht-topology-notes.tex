@@ -31,10 +31,7 @@
 %%% Внешний вид документа
 	%%% Номера страниц
 		\pagestyle{plain}
-	%%% Формат содержания
-		\renewcommand{\cftsecpresnum}{Лекция~}
-		\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-	%%% Подпись ссылка литературы
+	%%% Подпись списка литературы
 		\addto{\captionsrussian}{\renewcommand{\refname}{Литература по курсу}}
 	%%% Настройка ссылок
 		\definecolor{linkcolor}{HTML}{000040}
@@ -83,8 +80,9 @@
 		\relpenalty=10000
 		\binoppenalty=10000
 	%%% Нумерация секций и подсекций
-		\titleformat{\section}{\normalfont\Large\bfseries}{Лекция~\thesection}{1em}{}
+		\titleformat{\section}{\normalfont\Large\bfseries}{}{0em}{}
 		\setcounter{secnumdepth}{1}
+		\renewcommand\numberline[1]{}
 	%%% Изображения
 		\graphicspath{{images/}}
 %%%
@@ -180,7 +178,7 @@
 	для 599 группы в осеннем семестре 2016 года. Содержание дополнено несколькими поясняющими замечаниями
 	и упражнениями.
 
-	Автор выражает благдарность Анастасии Ремизовой за предоставленные иллюстрации.
+	Автор выражает благодарность Анастасии Ремизовой за иллюстрации.
 
 	По всем вопросам, замечаниям, предложениям можно:
 	\begin{itemize}
